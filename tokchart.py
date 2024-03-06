@@ -37,11 +37,15 @@ def get_monthly_urls() -> list[str]:
     years = range(start_year, end_year)
     base_url = "https://tokchart.com/monthly/"
     start_month = "february"
+    end_month = current_date.strftime("%B").lower()
     urls = []
     for year in years:
         for month in months:
             if year == start_year and months.index(month) <\
             months.index(start_month): # Ignore months before start month
+                continue
+            if year == end_year - 1 and months.index(month) >\
+            months.index(end_month):
                 continue
             urls.append(base_url + f"{month}-{year}")
     return urls
