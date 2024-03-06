@@ -1,7 +1,9 @@
 import datetime
+import os
 import pandas as pd
 import requests
 from selectolax.parser import HTMLParser
+import time
 from tqdm import tqdm
 
 
@@ -120,13 +122,16 @@ def scrape_month(url: str) -> pd.DataFrame:
     >>> res.shape[0] == 4 * 10
     True
     """
-    monthly_html = requests.get(url).text
+    identifying_header = {"User-Agent":
+                          f"{os.getenv('NAME')} <{os.getenv('EMAIL')}>"}
+    monthly_html = requests.get(url, headers=identifying_header).text
     weekly_urls = parse_monthly_html(monthly_html)
     dfs = []
     for weekly_url in tqdm(weekly_urls,
         desc = f"Scraping weekly data for {url.split('/')[-1]}"):
-        weekly_html = requests.get(weekly_url).text
+        weekly_html = requests.get(weekly_url, headers=identifying_header).text
         dfs.append(parse_weekly_html(weekly_html))
+        time.sleep(1)
     return pd.concat(dfs)
 
 
