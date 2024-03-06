@@ -15,5 +15,6 @@ Add personally identifying information to environment (for ethical reasons)
 `export EMAIL='insert_email_here@gmail.com'`
 
 Run scripts to collect data  
+`chmod +x ./download_kaggle.sh`
 `./download_kaggle.sh`  
 `python tokchart.py`
