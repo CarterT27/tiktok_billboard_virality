@@ -10,8 +10,8 @@ Install dependencies
 `cd tiktok_billboard_virality`  
 `pip install -r requirements.txt`
 
-Add personally identifying information to environment (for ethical reasons)
-`export NAME='Your Name'`
+Add personally identifying information to environment (for ethical reasons)  
+`export NAME='Your Name'`  
 `export EMAIL='insert_email_here@gmail.com'`
 
 Run scripts to collect data  
