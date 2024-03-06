@@ -2,3 +2,4 @@ kaggle
 pandas
 requests
 selectolax
+tqdm

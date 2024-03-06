@@ -2,6 +2,7 @@ import datetime
 import pandas as pd
 import requests
 from selectolax.parser import HTMLParser
+from tqdm import tqdm
 
 
 def get_monthly_urls() -> list[str]:
@@ -9,6 +10,10 @@ def get_monthly_urls() -> list[str]:
     Get list of monthly urls.
 
     >>> res = get_monthly_urls()
+    >>> isinstance(res, list)
+    True
+    >>> all(isinstance(v, str) for v in res)
+    True
     >>> res[0] == 'https://tokchart.com/monthly/february-2022'
     True
     >>> len(res) > 24 # At least two years of data
@@ -103,9 +108,35 @@ def parse_weekly_html(html: str):
     return pd.DataFrame(rows_list)
 
 
+def scrape_month(url: str) -> pd.DataFrame:
+    """
+    Get all weekly dataframes for a month given url.
+    
+    >>> res = scrape_month('https://tokchart.com/monthly/january-2024')
+    >>> res.shape[0] == 4 * 10
+    True
+    """
+    monthly_html = requests.get(url).text
+    weekly_urls = parse_monthly_html(monthly_html)
+    dfs = []
+    for weekly_url in tqdm(weekly_urls,
+        desc = f"Scraping weekly data for {url.split('/')[-1]}"):
+        weekly_html = requests.get(weekly_url).text
+        dfs.append(parse_weekly_html(weekly_html))
+    return pd.concat(dfs)
+
+
+def scrape_all() -> None:
+    """
+    Scrape all months to present.
+    """
+    monthly_urls = get_monthly_urls()
+    dfs = [scrape_month(url) for url in monthly_urls]
+    df = pd.concat(dfs)
+    df.to_csv('data/tokchart.csv', index=False)
+
 def main() -> None:
-    columns=['date', 'song', 'artist', 'rank',
-           'weekly_videos', 'image_url']
+    scrape_all()
 
 if __name__ == "__main__":
     main()
