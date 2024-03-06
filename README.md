@@ -12,3 +12,4 @@ Install dependencies
 
 Run scripts to collect data
 `./download_kaggle.sh`
+`python tokchart.py`
