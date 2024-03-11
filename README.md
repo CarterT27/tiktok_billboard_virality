@@ -17,6 +17,7 @@ Add personally identifying information to environment (for ethical reasons)
 Add [Kaggle API Key](https://www.kaggle.com/docs/api#getting-started-installation-&-authentication) to Use Kaggle CLI Tool
 
 Run scripts to collect data  
+`cd scripts`
 `chmod +x ./download_kaggle.sh`
 `./download_kaggle.sh`  
 `python tokchart.py`
