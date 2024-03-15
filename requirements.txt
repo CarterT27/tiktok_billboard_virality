@@ -4,3 +4,4 @@ requests
 selectolax
 tqdm
 notebook
+matplotlib
